@@ -8,21 +8,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.xpeho.xpeho_ui_android.foundations.XpehoUIColors
+import com.xpeho.xpeho_ui_android.foundations.Colors
 
 @Composable
-fun XpehoChips(content: @Composable () -> Unit) {
+fun TagPill(content: @Composable () -> Unit) {
     return Card(
         shape = RoundedCornerShape(6.dp),
         colors = CardDefaults.cardColors(
-            containerColor = XpehoUIColors.chipsColor,
+            containerColor = Colors.tagPillColor,
         ),
 
     ) {
@@ -37,28 +36,28 @@ fun XpehoChips(content: @Composable () -> Unit) {
 
 @Preview
 @Composable
-fun XpehoChipsPreview() {
+fun TagPillPreview() {
     Surface {
         Box(modifier = Modifier.padding(8.dp)) {
             Row {
-                XpehoChips {
-                    XpehoText(
+                TagPill {
+                    CustomText(
                         text = "protrait chinois",
                         color = Color.White,
                         fontSize = 10.sp
                     )
                 }
                 Box(modifier = Modifier.width(4.dp))
-                XpehoChips {
-                    XpehoText(
+                TagPill {
+                    CustomText(
                         text = "velo",
                         color = Color.White,
                         fontSize = 10.sp
                     )
                 }
                 Box(modifier = Modifier.width(4.dp))
-                XpehoChips {
-                    XpehoText(
+                TagPill {
+                    CustomText(
                         text = "stress",
                         color = Color.White,
                         fontSize = 10.sp

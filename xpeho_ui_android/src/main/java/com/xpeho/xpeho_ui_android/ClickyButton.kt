@@ -1,5 +1,6 @@
 package com.xpeho.xpeho_ui_android
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -23,14 +24,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.xpeho.xpeho_ui_android.foundations.XpehoUIColors
+import com.xpeho.xpeho_ui_android.foundations.Colors
 import java.util.concurrent.CancellationException
 
 @Composable
-fun XpehoButton(
+fun ClickyButton(
     enabled: Boolean = true,
     pressed: Boolean = false,
-    color: Color = XpehoUIColors.xpehoColor,
+    color: Color = Colors.xpehoColor,
     onPress: () -> Unit = {},
     content: @Composable () -> Unit,
 ) {
@@ -39,9 +40,11 @@ fun XpehoButton(
 
     var backgroundColor = color
 
+    var topPadding = 0.dp
     var bottomBorder = 6.dp
 
     if (touchedDown.value || pressed) {
+        topPadding = 4.dp
         bottomBorder = 2.dp
     }
 
@@ -53,23 +56,25 @@ fun XpehoButton(
         modifier = Modifier
             .width(195.dp)
             .height(38.dp)
+            .padding(top = topPadding)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onPress = {
-                        if(!enabled) return@detectTapGestures
+                        if (!enabled) return@detectTapGestures
                         touchedDown.value = true
 
                         val released = try {
                             tryAwaitRelease()
                         } catch (c: CancellationException) {
+                            Log.e("ClickyButton", "Canceled")
                             false
                         }
                         if (released) {
-                            //ACTION_UP
+                            // ACTION_UP
                             touchedDown.value = false
                             onPress()
                         } else {
-                            //CANCELED
+                            // CANCELED
                             touchedDown.value = false
                         }
                     }
@@ -116,7 +121,7 @@ fun XpehoButton(
 
 @Preview(showBackground = true)
 @Composable
-fun ButtonPreview() {
+fun ClickyButtonPreview() {
     Surface(
         color = Color.White,
         modifier = Modifier
@@ -125,26 +130,26 @@ fun ButtonPreview() {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            XpehoButton(color = Color.Red) {
-                XpehoText(text = "Annuler", color = Color.White)
+            ClickyButton(color = Color.Red) {
+                CustomText(text = "Annuler", color = Color.White)
             }
             Box(modifier = Modifier.height(16.dp))
-            XpehoButton(
+            ClickyButton(
                 onPress = { /*TODO*/ }
             ) {
-                XpehoText(text = "Consulter", color = Color.White)
+                CustomText(text = "Consulter", color = Color.White)
             }
             Box(modifier = Modifier.height(16.dp))
-            XpehoButton(pressed = true) {
-                XpehoText(text = "Pressed", color = Color.White)
+            ClickyButton(pressed = true) {
+                CustomText(text = "Pressed", color = Color.White)
             }
             Box(modifier = Modifier.height(16.dp))
-            XpehoButton(enabled = false) {
-                XpehoText(text = "Disabled", color = Color.Gray)
+            ClickyButton(enabled = false) {
+                CustomText(text = "Disabled", color = Color.Gray)
             }
             Box(modifier = Modifier.height(16.dp))
-            XpehoButton(enabled = false, pressed = true) {
-                XpehoText(text = "Disapress", color = Color.Gray)
+            ClickyButton(enabled = false, pressed = true) {
+                CustomText(text = "Disapress", color = Color.Gray)
             }
         }
     }

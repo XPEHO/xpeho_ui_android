@@ -8,10 +8,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
-import com.xpeho.xpeho_ui_android.foundations.XpehoUIFonts
+import com.xpeho.xpeho_ui_android.foundations.Fonts
 
 @Composable
-fun XpehoText(
+fun CustomText(
     text: String,
     color: Color,
     fontSize: TextUnit = 16.sp,
@@ -24,28 +24,20 @@ fun XpehoText(
         textValue = text.uppercase()
     }
 
-    val fontFamilyValue = when (fontWeight) {
-        FontWeight.Normal ->  XpehoUIFonts.rubikRegular
-        FontWeight.Medium ->  XpehoUIFonts.rubikMedium
-        FontWeight.SemiBold ->  XpehoUIFonts.rubikSemiBold
-        FontWeight.Bold ->  XpehoUIFonts.rubikBold
-        FontWeight.ExtraBold ->  XpehoUIFonts.rubikExtraBold
-        else ->  XpehoUIFonts.rubikMedium
-    }
-
     Text(
         text = textValue,
         color = color,
         fontSize = fontSize,
-        fontFamily = fontFamilyValue,
+        fontFamily = Fonts.rubik,
+        fontWeight = fontWeight,
     )
 }
 
 @Preview
 @Composable
-fun XpehoTextPreview() {
+fun CustomTextPreview() {
     Surface {
-        XpehoText(
+        CustomText(
             text = "Hello Android",
             color = Color.Black,
             fontWeight = FontWeight.Normal,

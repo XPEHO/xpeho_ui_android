@@ -29,10 +29,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.xpeho.xpeho_ui_android.foundations.XpehoUIColors
+import com.xpeho.xpeho_ui_android.foundations.Colors
 
 @Composable
-fun XpehoNewsLetter(
+fun CollapsibleCard(
     title: String,
     date: String,
     keywords: List<String> = listOf(),
@@ -66,17 +66,17 @@ fun XpehoNewsLetter(
                 ) {
                     Icon(
                         painter = painterResource(id =R.drawable.newsletter),
-                        tint = XpehoUIColors.xpehoColor,
+                        tint = Colors.xpehoColor,
                         contentDescription = "Newsletter icon",
                     )
-                    XpehoText(
+                    CustomText(
                         text = title,
                         color = Color.Black,
                         capitalize = false,
                         fontWeight = FontWeight.Normal
                     )
-                    XpehoChips {
-                        XpehoText(
+                    TagPill {
+                        CustomText(
                             text = date,
                             fontSize = 12.sp,
                             color = Color.White
@@ -103,8 +103,8 @@ fun XpehoNewsLetter(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
                         keywords.map {
-                            XpehoChips {
-                                XpehoText(
+                            TagPill {
+                                CustomText(
                                     text = it,
                                     color = Color.White,
                                     fontSize = 10.sp
@@ -117,10 +117,10 @@ fun XpehoNewsLetter(
                         modifier = Modifier
                             .fillMaxWidth()
                     ) {
-                        XpehoButton(
+                        ClickyButton(
                             onPress = onOpenPressed
                         ) {
-                            XpehoText(
+                            CustomText(
                                 text = "ouvrir",
                                 color = Color.White
                             )
@@ -134,7 +134,7 @@ fun XpehoNewsLetter(
 
 @Preview
 @Composable
-fun XpehoNewsLetterPreview() {
+fun CollapsibleCardPreview() {
     Surface(
         color = Color.LightGray,
     ) {
@@ -146,7 +146,7 @@ fun XpehoNewsLetterPreview() {
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                XpehoNewsLetter(
+                CollapsibleCard(
                     title = "Newsletter #32",
                     date = "12/05/2024",
                     keywords = listOf("Portrait chinois", "vélo", "stress"),
@@ -155,17 +155,17 @@ fun XpehoNewsLetterPreview() {
                         Log.d("XpehoNewsLetterPreview", "onOpenPressed")
                     }
                 )
-                XpehoNewsLetter(
+                CollapsibleCard(
                     title = "Newsletter #31",
                     date = "01/04/2024",
                     collapsed = true,
                 )
-                XpehoNewsLetter(
+                CollapsibleCard(
                     title = "Newsletter #30",
                     date = "13/03/2024",
                     collapsed = true,
                 )
-                XpehoNewsLetter(
+                CollapsibleCard(
                     title = "Newsletter #29",
                     date = "05/02/2024",
                     collapsed = true,
