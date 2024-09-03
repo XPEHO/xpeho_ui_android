@@ -17,6 +17,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,10 +30,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.xpeho.xpeho_ui_android.foundations.XpehoUIColors
+import com.xpeho.xpeho_ui_android.foundations.Colors
+import com.xpeho.xpeho_ui_android.foundations.Fonts
 
 @Composable
-fun XpehoNewsLetter(
+fun CollapsableCard(
     title: String,
     date: String,
     keywords: List<String> = listOf(),
@@ -66,22 +68,16 @@ fun XpehoNewsLetter(
                 ) {
                     Icon(
                         painter = painterResource(id =R.drawable.newsletter),
-                        tint = XpehoUIColors.xpehoColor,
+                        tint = Colors.XPEHO_COLOR,
                         contentDescription = "Newsletter icon",
                     )
-                    XpehoText(
-                        text = title,
+                    Text(
+                        title,
                         color = Color.Black,
-                        capitalize = false,
+                        fontFamily = Fonts.rubik,
                         fontWeight = FontWeight.Normal
                     )
-                    XpehoChips {
-                        XpehoText(
-                            text = date,
-                            fontSize = 12.sp,
-                            color = Color.White
-                        )
-                    }
+                    TagPill(date)
                     Spacer(modifier = Modifier.weight(1f))
                     Icon(
                         collapseIcon,
@@ -103,13 +99,7 @@ fun XpehoNewsLetter(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
                         keywords.map {
-                            XpehoChips {
-                                XpehoText(
-                                    text = it,
-                                    color = Color.White,
-                                    fontSize = 10.sp
-                                )
-                            }
+                            TagPill(it, size = 10.sp)
                         }
                     }
                     Row(
@@ -117,14 +107,10 @@ fun XpehoNewsLetter(
                         modifier = Modifier
                             .fillMaxWidth()
                     ) {
-                        XpehoButton(
+                        ClickyButton(
+                            "ouvrir",
                             onPress = onOpenPressed
-                        ) {
-                            XpehoText(
-                                text = "ouvrir",
-                                color = Color.White
-                            )
-                        }
+                        )
                     }
                 }
             }
@@ -134,7 +120,7 @@ fun XpehoNewsLetter(
 
 @Preview
 @Composable
-fun XpehoNewsLetterPreview() {
+fun CollapsableCardPreview() {
     Surface(
         color = Color.LightGray,
     ) {
@@ -146,7 +132,7 @@ fun XpehoNewsLetterPreview() {
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                XpehoNewsLetter(
+                CollapsableCard(
                     title = "Newsletter #32",
                     date = "12/05/2024",
                     keywords = listOf("Portrait chinois", "vélo", "stress"),
@@ -155,17 +141,17 @@ fun XpehoNewsLetterPreview() {
                         Log.d("XpehoNewsLetterPreview", "onOpenPressed")
                     }
                 )
-                XpehoNewsLetter(
+                CollapsableCard(
                     title = "Newsletter #31",
                     date = "01/04/2024",
                     collapsed = true,
                 )
-                XpehoNewsLetter(
+                CollapsableCard(
                     title = "Newsletter #30",
                     date = "13/03/2024",
                     collapsed = true,
                 )
-                XpehoNewsLetter(
+                CollapsableCard(
                     title = "Newsletter #29",
                     date = "05/02/2024",
                     collapsed = true,

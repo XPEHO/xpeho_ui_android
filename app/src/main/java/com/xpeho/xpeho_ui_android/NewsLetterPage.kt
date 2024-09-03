@@ -33,16 +33,15 @@ fun NewsLetterPage(
         ) {
             newsLetterList.mapIndexed { index, newsLetter ->
                 item {
-
                     val collapsed = index > 0
                     val context = LocalContext.current
-                    val intent  = remember {
+                    val intent = remember {
                         Intent(Intent.ACTION_VIEW).apply {
                             data = Uri.parse(newsLetter.link)
                         }
                     }
 
-                    XpehoNewsLetter(
+                    CollapsableCard(
                         title = newsLetter.title,
                         date = formatDate(newsLetter.date),
                         keywords = newsLetter.keywords,
