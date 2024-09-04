@@ -1,0 +1,27 @@
+config:
+  excludes: "build/"
+
+naming:
+  FunctionNaming:
+    functionPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    #ignoreAnnotated: ['Composable']
+  PackageNaming:
+    active: false
+
+complexity:
+  LongParameterList:
+    functionThreshold: 100
+    ignoreDefaultParameters: true
+  LongMethod:
+    threshold: 100
+#  TooManyFunctions:
+#    ignoreAnnotatedFunctions: ['Preview']
+
+style:
+  MagicNumber:
+    ignorePropertyDeclaration: true
+    ignoreCompanionObjectPropertyDeclaration: true
+  NewLineAtEndOfFile:
+    active: false
+  UnusedPrivateMember:
+    ignoreAnnotated: ['Preview']
