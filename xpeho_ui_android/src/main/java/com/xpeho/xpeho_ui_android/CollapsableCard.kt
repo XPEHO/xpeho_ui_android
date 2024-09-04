@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -24,10 +25,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.xpeho.xpeho_ui_android.foundations.Colors
@@ -35,24 +38,30 @@ import com.xpeho.xpeho_ui_android.foundations.Fonts
 
 @Composable
 fun CollapsableCard(
-    title: String,
-    date: String,
-    keywords: List<String> = listOf(),
-    onOpenPressed: () -> Unit = {},
-    collapsed: Boolean = false,
+    label: String,
+    headTag: @Composable () -> Unit = {},
+    tags: @Composable (() -> Unit)? = null,
+    button: @Composable (() -> Unit)? = null,
+    icon: @Composable () -> Unit = {},
+    openArrowIcon: ImageVector = Icons.Default.KeyboardArrowUp,
+    closeArrowIcon: ImageVector = Icons.Default.KeyboardArrowDown,
+    size: TextUnit = 18.sp,
+    labelColor: Color = Color.Black,
+    backgroundColor: Color = Color.White,
+    collapsable: Boolean = true,
+    defaultOpen: Boolean = false,
 ) {
+    val opened = remember { mutableStateOf(defaultOpen) }
 
-    val collapsedValue = remember { mutableStateOf(collapsed) }
-
-    val collapseIcon = if (collapsedValue.value) {
-        Icons.Default.KeyboardArrowDown
+    val openIcon = if (opened.value) {
+        openArrowIcon
     } else {
-        Icons.Default.KeyboardArrowUp
+        closeArrowIcon
     }
 
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = backgroundColor,
         )
     ) {
         Box(
@@ -63,54 +72,60 @@ fun CollapsableCard(
             ) {
                 // Title row
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(32.dp),
+
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Icon(
-                        painter = painterResource(id =R.drawable.newsletter),
-                        tint = Colors.XPEHO_COLOR,
-                        contentDescription = "Newsletter icon",
-                    )
+                    if (collapsable) {
+                        icon()
+                        Spacer(modifier = Modifier.width(12.dp))
+                    }
                     Text(
-                        title,
-                        color = Color.Black,
-                        fontFamily = Fonts.rubik,
+                        label,
+                        fontSize = size,
+                        color = labelColor,
+                        fontFamily = Fonts.raleway,
                         fontWeight = FontWeight.Normal
                     )
-                    TagPill(date)
                     Spacer(modifier = Modifier.weight(1f))
-                    Icon(
-                        collapseIcon,
-                        contentDescription = "Newsletter collapse icon",
-                        modifier = Modifier
-                            .size(24.dp)
-                            .pointerInput(Unit) {
-                                detectTapGestures(
-                                    onPress = {
-                                        collapsedValue.value = !collapsedValue.value
-                                    }
-                                )
-                            }
-                    )
+                    headTag()
+                    Spacer(modifier = Modifier.weight(1f))
+                    if (collapsable) {
+                        Icon(
+                            openIcon,
+                            contentDescription = "Newsletter collapse icon",
+                            modifier = Modifier
+                                .size(24.dp)
+                                .pointerInput(Unit) {
+                                    detectTapGestures(
+                                        onPress = {
+                                            if (collapsable) {
+                                                opened.value = !opened.value
+                                            }
+                                        }
+                                    )
+                                }
+                        )
+                    } else {
+                        icon()
+                    }
                 }
                 // Chips row
-                if(!collapsedValue.value) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    ) {
-                        keywords.map {
-                            TagPill(it, size = 10.sp)
+                if (opened.value || !collapsable) {
+                    if (tags != null) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        ) {
+                            tags()
                         }
                     }
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        ClickyButton(
-                            "ouvrir",
-                            onPress = onOpenPressed
-                        )
+                    if (button != null) {
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            button()
+                        }
                     }
                 }
             }
@@ -133,28 +148,130 @@ fun CollapsableCardPreview() {
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 CollapsableCard(
-                    title = "Newsletter #32",
-                    date = "12/05/2024",
-                    keywords = listOf("Portrait chinois", "vélo", "stress"),
-                    collapsed = false,
-                    onOpenPressed = {
-                        Log.d("XpehoNewsLetterPreview", "onOpenPressed")
-                    }
+                    label = "Titre de QVST",
+                    tags = {
+                        TagPill("Thème")
+                        TagPill("n jours restants")
+                        TagPill("n/t complétés")
+                    },
+                    button = {
+                        ClickyButton(
+                            "Compléter",
+                            onPress = {
+                                Log.d("XpehoNewsLetterPreview", "onOpenPressed")
+                            }
+                        )
+                    },
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.qvst),
+                            tint = Colors.XPEHO_COLOR,
+                            contentDescription = "Newsletter icon",
+                        )
+                    },
                 )
                 CollapsableCard(
-                    title = "Newsletter #31",
-                    date = "01/04/2024",
-                    collapsed = true,
+                    label = "Titre de QVST",
+                    tags = {
+                        TagPill("Thème")
+                        TagPill("n jours restants")
+                        TagPill("n/t complétés")
+                    },
+                    button = {
+                        ClickyButton(
+                            "Compléter",
+                            onPress = {
+                                Log.d("XpehoNewsLetterPreview", "onOpenPressed")
+                            }
+                        )
+                    },
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.qvst),
+                            tint = Colors.XPEHO_COLOR,
+                            contentDescription = "Newsletter icon",
+                        )
+                    },
+                    defaultOpen = true,
                 )
                 CollapsableCard(
-                    title = "Newsletter #30",
-                    date = "13/03/2024",
-                    collapsed = true,
+                    label = "Titre de QVST",
+                    tags = {
+                        TagPill("Thème")
+                        TagPill("n jours restants")
+                        TagPill("n/t complétés")
+                    },
+                    button = {
+                        ClickyButton(
+                            "Compléter",
+                            onPress = {
+                                Log.d("XpehoNewsLetterPreview", "onOpenPressed")
+                            }
+                        )
+                    },
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.qvst),
+                            tint = Colors.XPEHO_COLOR,
+                            contentDescription = "Newsletter icon",
+                        )
+                    },
+                    collapsable = false
                 )
                 CollapsableCard(
-                    title = "Newsletter #29",
-                    date = "05/02/2024",
-                    collapsed = true,
+                    label = "Newsletter #32",
+                    headTag = {
+                        TagPill(label = "12/05/2024")
+                    },
+                    tags = {
+                        TagPill("Portrait chinois")
+                        TagPill("vélo")
+                        TagPill("stress")
+                    },
+                    button = {
+                        ClickyButton(
+                            "OUVRIR",
+                            onPress = {
+                                Log.d("XpehoNewsLetterPreview", "onOpenPressed")
+                            }
+                        )
+                    },
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.newsletter),
+                            tint = Colors.XPEHO_COLOR,
+                            contentDescription = "Newsletter icon",
+                        )
+                    },
+                    defaultOpen = true,
+                )
+                CollapsableCard(
+                    label = "Newsletter #33",
+                    headTag = {
+                        TagPill(label = "12/05/2024")
+                    },
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.newsletter),
+                            tint = Colors.XPEHO_COLOR,
+                            contentDescription = "Newsletter icon",
+                        )
+                    },
+                )
+                CollapsableCard(
+                    label = "Anniversaire de NOM",
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.birthday),
+                            tint = Colors.XPEHO_COLOR,
+                            contentDescription = "Newsletter icon",
+                        )
+                    },
+                    tags = {
+                        TagPill("__MOIS")
+                        TagPill("__ANS")
+                    },
+                    collapsable = false
                 )
             }
         }
