@@ -62,3 +62,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
+
+sonar {
+    properties {
+        property("sonar.projectKey", "XPEHO_xpeho_ui_android_d4f36bbd-6fdc-4467-8e77-9dc16a19a085")
+        property("sonar.projectName", "xpeho_ui_android")
+    }
+}

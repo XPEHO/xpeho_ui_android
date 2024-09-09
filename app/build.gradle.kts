@@ -1,10 +1,11 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+
 }
 
 android {
-    namespace = "com.example.xpeho_ui_android"
+    namespace = "com.xpeho.xpeho_ui_android"
     compileSdk = 34
 
     defaultConfig {
@@ -67,4 +68,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "XPEHO_xpeho_ui_android_d4f36bbd-6fdc-4467-8e77-9dc16a19a085")
+        property("sonar.projectName", "xpeho_ui_android")
+    }
 }

@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.xpeho.xpeho_ui_android.ui.theme.Xpeho_ui_androidTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,7 +23,10 @@ class MainActivity : ComponentActivity() {
             Xpeho_ui_androidTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        NewsLetterPage()
+                        Greeting(
+                            name = "Android",
+                            modifier = Modifier.padding(16.dp)
+                        )
                     }
                 }
             }
