@@ -1,37 +1,41 @@
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.times
 import com.xpeho.xpeho_ui_android.R
 import com.xpeho.xpeho_ui_android.foundations.Colors
 import com.xpeho.xpeho_ui_android.foundations.Fonts
 
 @Composable
-fun InputTextField(
+fun InputText(
     label: String,
     passwordSwitcherIcon: @Composable () -> Unit = {
         Icon(
             painter = painterResource(id = R.drawable.eye),
             contentDescription = "Password switcher representation with eye icon",
-            tint = Color.Black
+            tint = Color.Black,
         )
     },
     defaultInput: String = "",
@@ -47,9 +51,14 @@ fun InputTextField(
     var passwordVisible by remember { mutableStateOf(false) }
     var isFocused by remember { mutableStateOf(false) }
 
-    // Animate label position based on input and focus state
-    val labelPosition by animateFloatAsState(
-        targetValue = if (isFocused || input.isNotEmpty()) 0f else 0f, label = ""
+    val visualTransform = if (password && !passwordVisible) {
+        PasswordVisualTransformation()
+    } else {
+        VisualTransformation.None
+    }
+
+    val animatedLabelSize by animateFloatAsState(
+        targetValue = if (isFocused || input.isNotEmpty()) labelSize - 3f else labelSize, label = ""
     )
 
     Box(
@@ -68,13 +77,11 @@ fun InputTextField(
                 if (label.isNotEmpty()) {
                     Text(
                         text = label,
-                        fontSize = labelSize.sp,
-                        fontFamily = Fonts.rubik,
-                        fontWeight = FontWeight.Normal,
+                        fontSize = animatedLabelSize.sp,
+                        fontFamily = Fonts.raleway,
+                        fontWeight = FontWeight.Medium,
                         color = labelColor,
-                        modifier = Modifier
-                            .padding(start = 10.dp)
-                            .offset(y = labelPosition * 20.dp)
+                        modifier = Modifier.padding(start = 10.dp)
                     )
                 }
 
@@ -84,7 +91,7 @@ fun InputTextField(
                         input = it
                         onInput(it)
                     },
-                    visualTransformation = if (password && !passwordVisible) PasswordVisualTransformation() else VisualTransformation.None,
+                    visualTransformation = visualTransform,
                     keyboardOptions = KeyboardOptions(keyboardType = if (password) KeyboardType.Password else KeyboardType.Text),
                     textStyle = LocalTextStyle.current.copy(
                         fontSize = inputSize.sp,
@@ -94,14 +101,27 @@ fun InputTextField(
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = if (isFocused || input.isNotEmpty()) 20.dp else 0.dp, start = 10.dp)
+                        .padding(
+                            top = if (isFocused || input.isNotEmpty()) 20.dp else 0.dp,
+                            start = 10.dp
+                        )
                         .onFocusChanged { isFocused = it.isFocused }
                 )
             }
 
             if (password) {
-                IconButton(
-                    onClick = { passwordVisible = !passwordVisible }
+                Box(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .pointerInput(Unit) {
+                            detectTapGestures(
+                                onPress = {
+                                    passwordVisible = true
+                                    tryAwaitRelease()
+                                    passwordVisible = false
+                                }
+                            )
+                        }
                 ) {
                     passwordSwitcherIcon()
                 }
@@ -115,21 +135,72 @@ fun InputTextField(
 fun InputTextPreview() {
     Surface(
         color = Colors.BACKGROUND_COLOR,
-        modifier = Modifier
-            .padding(16.dp)
+        modifier = Modifier.padding(16.dp)
     ) {
         Column {
-            InputTextField(
-                label = "Password",
+            InputText(
+                label = "Input Text",
                 labelSize = 14f,
                 inputSize = 16f,
-                password = true
             )
             Spacer(modifier = Modifier.height(16.dp))
-            InputTextField(
-                label = "Username",
+            InputText(
+                label = "Input Text Hiddenable",
                 labelSize = 14f,
-                inputSize = 16f
+                inputSize = 16f,
+                password = false,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            InputText(
+                label = "Input Text With input",
+                defaultInput = "input",
+                labelSize = 14f,
+                inputSize = 16f,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            InputText(
+                label = "Input Text Hiddenable With input",
+                defaultInput = "input",
+                labelSize = 14f,
+                inputSize = 16f,
+                password = true,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            InputText(
+                label = "Input Text Customed",
+                labelSize = 14f,
+                inputSize = 16f,
+                inputColor = Color.White,
+                labelColor = Colors.RED_INFO_COLOR,
+                backgroundColor = Colors.CONTENT_COLOR,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            InputText(
+                label = "Input Text Customed With input",
+                defaultInput = "input",
+                labelSize = 14f,
+                inputSize = 16f,
+                inputColor = Color.White,
+                labelColor = Colors.RED_INFO_COLOR,
+                backgroundColor = Colors.CONTENT_COLOR,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            InputText(
+                label = "Input Text Hiddenable Customed With input",
+                defaultInput = "input",
+                inputColor = Color.White,
+                labelColor = Colors.RED_INFO_COLOR,
+                backgroundColor = Colors.CONTENT_COLOR,
+                labelSize = 14f,
+                inputSize = 16f,
+                password = true,
+                passwordSwitcherIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.eye),
+                        contentDescription = "Password switcher representation with eye icon",
+                        tint = Color.White
+                    )
+                }
             )
         }
     }

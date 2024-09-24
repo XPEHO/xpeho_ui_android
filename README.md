@@ -50,6 +50,23 @@ CollapsableCard(
 )
 ```
 
+### InputText
+
+```
+InputText(
+    label: String,
+    passwordSwitcherIcon: () -> Unit,
+    defaultInput: String,
+    labelSize: Float,
+    inputSize: Float,
+    labelColor: Color,
+    backgroundColor: Color, 
+    inputColor: Color,
+    password: Boolean,
+    onInput: (String) -> Unit,
+)
+```
+
 ## Testing
 
 ### Snapshot testing
