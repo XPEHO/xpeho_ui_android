@@ -14,6 +14,10 @@ TODO
 
 ### ClickyButton
 
+![alt text](xpeho_ui_android/doc/clickybutton.png)
+
+Usage : 
+
 ```
 ClickyButton(
     label: String,
@@ -29,6 +33,10 @@ ClickyButton(
 
 ### TagPill
 
+![alt text](xpeho_ui_android/doc/tagpill.png)
+
+Usage:
+
 ```
 TagPill(
     label: String,
@@ -39,6 +47,10 @@ TagPill(
 ```
 
 ### CollapsableCard
+
+![alt text](xpeho_ui_android/doc/collapsablecard.png)
+
+Usage:
 
 ```
 CollapsableCard(
@@ -51,6 +63,10 @@ CollapsableCard(
 ```
 
 ### InputText
+
+![alt text](xpeho_ui_android/doc/inputtext.png)
+
+usage: 
 
 ```
 InputText(
