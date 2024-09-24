@@ -1,7 +1,17 @@
+package com.xpeho.xpeho_ui_android
+
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -24,7 +34,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.xpeho.xpeho_ui_android.R
 import com.xpeho.xpeho_ui_android.foundations.Colors
 import com.xpeho.xpeho_ui_android.foundations.Fonts
 
@@ -55,6 +64,12 @@ fun InputText(
         PasswordVisualTransformation()
     } else {
         VisualTransformation.None
+    }
+
+    val keyBoardType = if (password) {
+        KeyboardType.Password
+    } else {
+        KeyboardType.Text
     }
 
     val animatedLabelSize by animateFloatAsState(
@@ -92,7 +107,7 @@ fun InputText(
                         onInput(it)
                     },
                     visualTransformation = visualTransform,
-                    keyboardOptions = KeyboardOptions(keyboardType = if (password) KeyboardType.Password else KeyboardType.Text),
+                    keyboardOptions = KeyboardOptions(keyboardType = keyBoardType),
                     textStyle = LocalTextStyle.current.copy(
                         fontSize = inputSize.sp,
                         fontFamily = Fonts.rubik,
