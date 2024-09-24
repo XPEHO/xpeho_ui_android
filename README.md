@@ -14,6 +14,10 @@ TODO
 
 ### ClickyButton
 
+![alt text](xpeho_ui_android/doc/clickybutton.png)
+
+Usage : 
+
 ```
 ClickyButton(
     label: String,
@@ -29,6 +33,10 @@ ClickyButton(
 
 ### TagPill
 
+![alt text](xpeho_ui_android/doc/tagpill.png)
+
+Usage:
+
 ```
 TagPill(
     label: String,
@@ -40,6 +48,10 @@ TagPill(
 
 ### CollapsableCard
 
+![alt text](xpeho_ui_android/doc/collapsablecard.png)
+
+Usage:
+
 ```
 CollapsableCard(
     title: String,
@@ -47,6 +59,27 @@ CollapsableCard(
     keywords: List<String>,
     onOpenPressed: () -> Unit,
     collapsed: Boolean,
+)
+```
+
+### InputText
+
+![alt text](xpeho_ui_android/doc/inputtext.png)
+
+usage: 
+
+```
+InputText(
+    label: String,
+    passwordSwitcherIcon: () -> Unit,
+    defaultInput: String,
+    labelSize: Float,
+    inputSize: Float,
+    labelColor: Color,
+    backgroundColor: Color, 
+    inputColor: Color,
+    password: Boolean,
+    onInput: (String) -> Unit,
 )
 ```
 
