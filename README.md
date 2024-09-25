@@ -83,6 +83,24 @@ InputText(
 )
 ```
 
+### ChoiceSelector
+
+![alt text](xpeho_ui_android/doc/choiceselector.png)
+
+usage: 
+
+```
+    label: String,
+    choicesAvailable: List<String>,
+    defaultSelectedChoice: String,
+    size: Float,
+    backgroundColor: Color,
+    choiceColor: Color ,
+    checkIconColor: Color,
+    separatorColor: Color,
+    onPress: (String) -> Unit,
+```
+
 ## Testing
 
 ### Snapshot testing
