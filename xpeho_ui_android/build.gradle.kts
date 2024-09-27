@@ -1,7 +1,11 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
 
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    `maven-publish`
 
 }
 
@@ -17,7 +21,7 @@ android {
     }
 
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -43,6 +47,38 @@ android {
     }
 }
 
+val githubProperties = Properties()
+githubProperties.load(FileInputStream(rootProject.file("github.properties")))
+
+val versionCode = "1.1.0" // version code
+val artifactId = "xpeho_ui_android" // library name ID
+
+publishing {
+    publications {
+        create<MavenPublication>("gpr") {
+            run {
+                groupId = "com.xpeho.packages"
+                artifactId = artifactId
+                version = versionCode
+                artifact("${layout.buildDirectory.dir("outputs/aar").get().asFile}/${artifactId}-release.aar")
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/XPEHO/xpeho_ui_android")
+            credentials {
+                username = githubProperties["gpr.usr"] as String? ?: System.getenv("USER")
+                password =
+                    githubProperties["gpr.key"] as String? ?: System.getenv("PAT")
+
+            }
+        }
+    }
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -62,3 +98,4 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
+

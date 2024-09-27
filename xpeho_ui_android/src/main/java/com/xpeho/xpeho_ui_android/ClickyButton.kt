@@ -40,7 +40,7 @@ fun ClickyButton(
     backgroundColor: Color = Colors.XPEHO_COLOR,
     labelColor: Color = Color.White,
     verticalPadding: Dp = 8.dp,
-    horizontalPadding: Dp = 16.dp,
+    horizontalPadding: Dp = 40.dp,
     enabled: Boolean = true,
     onPress: () -> Unit = {},
 ) {
@@ -52,6 +52,10 @@ fun ClickyButton(
     var topPadding = 0.dp
     var bottomBorder = 6.dp
 
+    if (!enabled) {
+        bottomBorder = 2.dp
+    }
+
     if (touchedDown.value) {
         topPadding = 4.dp
         bottomBorder = 2.dp
@@ -62,9 +66,8 @@ fun ClickyButton(
     }
 
     Surface(
+        color = Color.Transparent,
         modifier = Modifier
-            .width(195.dp)
-            .height(38.dp)
             .padding(top = topPadding)
             .pointerInput(Unit) {
                 detectTapGestures(
@@ -105,7 +108,6 @@ fun ClickyButton(
                         start = 2.dp,
                         end = 2.dp
                     )
-                    .fillMaxWidth()
             ) {
                 Box(
                     modifier = Modifier
@@ -117,11 +119,8 @@ fun ClickyButton(
                             start = horizontalPadding,
                             end = horizontalPadding
                         )
-                        .fillMaxWidth()
-                        .fillMaxHeight()
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
