@@ -50,7 +50,7 @@ android {
 val githubProperties = Properties()
 githubProperties.load(FileInputStream(rootProject.file("github.properties")))
 
-val versionCode = "1.1.0" // version code
+val versionCode = "1.2.0" // version code
 val artifactId = "xpeho_ui_android" // library name ID
 
 publishing {
@@ -60,7 +60,11 @@ publishing {
                 groupId = "com.xpeho.packages"
                 artifactId = artifactId
                 version = versionCode
-                artifact("${layout.buildDirectory.dir("outputs/aar").get().asFile}/${artifactId}-release.aar")
+                artifact(
+                    "${
+                        layout.buildDirectory.dir("outputs/aar").get().asFile
+                    }/${artifactId}-release.aar"
+                )
             }
         }
     }

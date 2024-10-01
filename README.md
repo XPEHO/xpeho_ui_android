@@ -75,6 +75,22 @@ This is an Android implementation of the Xpeho UI made with Jetpack Compose.
 
 ## Deployment
 
+### Java Runtime
+
+Make sure you have install a Java Runtime.
+
+- MacOS : 
+    ```shell
+    brew install java
+    echo 'export PATH="/usr/local/opt/openjdk/bin:$PATH"' >> ~/.zshrc
+    export CPPFLAGS="-I/usr/local/opt/openjdk/include"
+    ```
+
+    After that you can relaunch your terminale or type :
+    ```shell      
+    source ~/.zshrc   
+    ```
+
 ### Github properties
 
 Define at the root of the repository a file `github.properties` following this structure :
@@ -250,7 +266,7 @@ InputText(
 
 ![ChoiceSelector](xpeho_ui_android/doc/choiceselector.png)
 
-usage:
+Usage:
 
 ```kotlin
 import com.xpeho.xpeho_ui_android.ChoiceSelector
@@ -267,6 +283,30 @@ ChoiceSelector(
     onPress = (String) -> Unit
 )
 ```
+
+### FilePreviewButton
+
+![FilePreviewButton] (xpeho_ui_android/doc/filepreviewbutton.png)
+
+Usage:
+```kotlin
+import com.xpeho.xpeho_ui_android.FilePreviewButton
+
+FilePreviewButton(
+    labelStart: String,
+    labelEnd: String,
+    imagePreview: @Composable()-> Unit,
+    tags: List<@Composable()-> Unit> = listOf({TagPill()},),
+    height: Dp,
+    labelSize: TextUnit,
+    backgroundColor: Color,
+    labelColor: Color,
+    enabled: Boolean,
+    labelPosition: LabelPosition,
+    onPress: () -> Unit,
+    arrowIcon: @Composable() -> Unit,
+)
+
 
 ## Testing
 

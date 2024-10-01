@@ -32,6 +32,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.xpeho.xpeho_ui_android.foundations.Colors
@@ -48,8 +49,8 @@ fun InputText(
         )
     },
     defaultInput: String = "",
-    labelSize: Float,
-    inputSize: Float,
+    labelSize: TextUnit,
+    inputSize: TextUnit,
     labelColor: Color = Color.Gray.copy(alpha = 0.7f),
     backgroundColor: Color = Color.White,
     inputColor: Color = Color.Black,
@@ -73,7 +74,7 @@ fun InputText(
     }
 
     val animatedLabelSize by animateFloatAsState(
-        targetValue = if (isFocused || input.isNotEmpty()) labelSize - 3f else labelSize, label = ""
+        targetValue = if (isFocused || input.isNotEmpty()) labelSize.value - 3f else labelSize.value, label = ""
     )
 
     Box(
@@ -109,7 +110,7 @@ fun InputText(
                     visualTransformation = visualTransform,
                     keyboardOptions = KeyboardOptions(keyboardType = keyBoardType),
                     textStyle = LocalTextStyle.current.copy(
-                        fontSize = inputSize.sp,
+                        fontSize = inputSize,
                         fontFamily = Fonts.rubik,
                         fontWeight = FontWeight.Normal,
                         color = inputColor
@@ -155,36 +156,36 @@ fun InputTextPreview() {
         Column {
             InputText(
                 label = "Input Text",
-                labelSize = 14f,
-                inputSize = 16f,
+                labelSize = 14.sp,
+                inputSize = 16.sp,
             )
             Spacer(modifier = Modifier.height(16.dp))
             InputText(
                 label = "Input Text Hiddenable",
-                labelSize = 14f,
-                inputSize = 16f,
+                labelSize = 14.sp,
+                inputSize = 16.sp,
                 password = false,
             )
             Spacer(modifier = Modifier.height(16.dp))
             InputText(
                 label = "Input Text With input",
                 defaultInput = "input",
-                labelSize = 14f,
-                inputSize = 16f,
+                labelSize = 14.sp,
+                inputSize = 16.sp,
             )
             Spacer(modifier = Modifier.height(16.dp))
             InputText(
                 label = "Input Text Hiddenable With input",
                 defaultInput = "input",
-                labelSize = 14f,
-                inputSize = 16f,
+                labelSize = 14.sp,
+                inputSize = 16.sp,
                 password = true,
             )
             Spacer(modifier = Modifier.height(16.dp))
             InputText(
                 label = "Input Text Customed",
-                labelSize = 14f,
-                inputSize = 16f,
+                labelSize = 14.sp,
+                inputSize = 16.sp,
                 inputColor = Color.White,
                 labelColor = Colors.RED_INFO_COLOR,
                 backgroundColor = Colors.CONTENT_COLOR,
@@ -193,8 +194,8 @@ fun InputTextPreview() {
             InputText(
                 label = "Input Text Customed With input",
                 defaultInput = "input",
-                labelSize = 14f,
-                inputSize = 16f,
+                labelSize = 14.sp,
+                inputSize = 16.sp,
                 inputColor = Color.White,
                 labelColor = Colors.RED_INFO_COLOR,
                 backgroundColor = Colors.CONTENT_COLOR,
@@ -206,8 +207,8 @@ fun InputTextPreview() {
                 inputColor = Color.White,
                 labelColor = Colors.RED_INFO_COLOR,
                 backgroundColor = Colors.CONTENT_COLOR,
-                labelSize = 14f,
-                inputSize = 16f,
+                labelSize = 14.sp,
+                inputSize = 16.sp,
                 password = true,
                 passwordSwitcherIcon = {
                     Icon(

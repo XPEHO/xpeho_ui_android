@@ -25,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.xpeho.xpeho_ui_android.R
@@ -36,7 +37,7 @@ fun ChoiceSelector(
     label: String = "Choice Selector",
     choicesAvailable: List<String>,
     defaultSelectedChoice: String? = null,
-    size: Float = 18f,
+    size: TextUnit = 18.sp,
     backgroundColor: Color = Color.White,
     choiceColor: Color = Color.Black,
     checkIconColor: Color = Color.Green,
@@ -73,7 +74,7 @@ fun ChoiceSelector(
                 ) {
                     Text(
                         text = choice,
-                        fontSize = size.sp,
+                        fontSize = size,
                         fontFamily = Fonts.raleway,
                         color = choiceColor,
                         modifier = Modifier.weight(1f)
