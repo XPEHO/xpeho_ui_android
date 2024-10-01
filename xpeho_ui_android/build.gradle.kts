@@ -50,7 +50,7 @@ android {
 val githubProperties = Properties()
 githubProperties.load(FileInputStream(rootProject.file("github.properties")))
 
-val versionCode = "1.2.0" // version code
+val versionCode = "1.3.1" // version code
 val artifactId = "xpeho_ui_android" // library name ID
 
 publishing {
