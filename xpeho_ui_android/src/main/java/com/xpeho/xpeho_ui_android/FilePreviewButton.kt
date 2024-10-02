@@ -6,7 +6,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -48,10 +46,11 @@ import com.xpeho.xpeho_ui_android.foundations.Fonts
 enum class LabelPosition {
     TOP, BOTTOM
 }
+
 @Composable
 fun FilePreviewButton(
-    labelStart: String = "File Preview Button",
-    labelEnd: String = "Info",
+    labelStart: String = "",
+    labelEnd: String = "",
     imagePreview: @Composable () -> Unit = {
         Image(
             painter = painterResource(id = R.drawable.placeholder),
@@ -60,27 +59,21 @@ fun FilePreviewButton(
             modifier = Modifier.fillMaxSize()
         )
     },
-    tags: List<@Composable () -> Unit> = listOf(
-        { TagPill("TAG PILL 1") },
-        { TagPill("TAG PILL 2") },
-        { TagPill("TAG PILL 3") },
-        { TagPill("TAG PILL 4") }
-    ),
+    tags: @Composable (() -> Unit)? = null,
     height: Dp = 250.dp,
     labelSize: TextUnit = 18.sp,
-    backgroundColor: Color = Colors.BACKGROUND_COLOR,
-    labelColor: Color = Color.Black,
+    backgroundColor: Color = Color.White,
+    labelColor: Color = Colors.CONTENT_COLOR,
     enabled: Boolean = true,
     labelPosition: LabelPosition = LabelPosition.TOP,
-    onPress: () -> Unit = { println("Button pressed") },
-    arrowIcon: @Composable (Modifier) -> Unit = { modifier ->
+    arrowIcon: @Composable () -> Unit = {
         Icon(
             painter = painterResource(id = R.drawable.arrow_right),
             contentDescription = "Arrow icon",
             tint = Color.White,
-            modifier = modifier
         )
-    }
+    },
+    onPress: () -> Unit = { println("Button pressed") },
 ) {
     var pressed by remember { mutableStateOf(false) }
 
@@ -166,25 +159,28 @@ fun FilePreviewButton(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.BottomStart)
-                        .horizontalScroll(rememberScrollState())
-                        .clipToBounds()
                         .padding(10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Row(modifier = Modifier.weight(1f)) {
-                        tags.forEach { tag ->
-                            Box(modifier = Modifier.padding(horizontal = 4.dp)) {
-                                tag()
-                            }
-                        }
+                    Row(
+                        modifier = Modifier
+                            .weight(8f),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        tags?.invoke()
                     }
 
                     // Arrow Icon with animation
-                    arrowIcon(
-                        Modifier
+                    Row(
+                        modifier = Modifier
                             .offset(x = arrowOffset.dp)
                             .alpha(arrowAlpha)
-                    )
+                            .weight(1f),
+                        horizontalArrangement = Arrangement.End
+
+                    ) {
+                        arrowIcon()
+                    }
                 }
             }
 
@@ -233,33 +229,32 @@ fun FilePreviewButtonPreview() {
             Column {
                 FilePreviewButton(
                     height = 200.dp,
-                    tags = listOf(
-                        { TagPill("TAG PILL 1", backgroundColor = Colors.XPEHO_COLOR) },
-                        { TagPill("TAG PILL 2", backgroundColor = Colors.XPEHO_COLOR) },
-                        { TagPill("TAG PILL 3", backgroundColor = Colors.XPEHO_COLOR) },
-                        { TagPill("TAG PILL 4", backgroundColor = Colors.XPEHO_COLOR) },
-                    ),
+                    tags = {
+                        TagPill("TAG PILL 1", backgroundColor = Colors.XPEHO_COLOR)
+                        TagPill("TAG PILL 2", backgroundColor = Colors.XPEHO_COLOR)
+                        TagPill("TAG PILL 3", backgroundColor = Colors.XPEHO_COLOR)
+                        TagPill("TAG PILL 4", backgroundColor = Colors.XPEHO_COLOR)
+                    },
                     labelPosition = LabelPosition.TOP,
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 FilePreviewButton(
                     height = 200.dp,
                     labelStart = "File Preview Button Customized",
-                    tags = listOf(
-                        { TagPill("TAG PILL CUSTOM 1", backgroundColor = Colors.RED_INFO_COLOR) },
-                        { TagPill("TAG PILL CUSTOM 2", backgroundColor = Colors.RED_INFO_COLOR) },
-                        { TagPill("TAG PILL CUSTOM 3", backgroundColor = Colors.RED_INFO_COLOR) },
-                        { TagPill("TAG PILL CUSTOM 4", backgroundColor = Colors.RED_INFO_COLOR) },
-                    ),
+                    tags = {
+                        TagPill("TAG PILL CUSTOM 1", backgroundColor = Colors.RED_INFO_COLOR)
+                        TagPill("TAG PILL CUSTOM 2", backgroundColor = Colors.RED_INFO_COLOR)
+                        TagPill("TAG PILL CUSTOM 3", backgroundColor = Colors.RED_INFO_COLOR)
+                        TagPill("TAG PILL CUSTOM 4", backgroundColor = Colors.RED_INFO_COLOR)
+                    },
                     labelColor = Color.White,
                     backgroundColor = Colors.CONTENT_COLOR,
                     labelPosition = LabelPosition.BOTTOM,
-                    arrowIcon =  { modifier ->
+                    arrowIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.arrow_right),
                             contentDescription = "Arrow icon",
                             tint = Colors.RED_INFO_COLOR,
-                            modifier = modifier
                         )
                     }
                 )
@@ -268,12 +263,13 @@ fun FilePreviewButtonPreview() {
                     enabled = false,
                     labelStart = "File Preview Button Disabled",
                     height = 200.dp,
-                    tags = listOf(
-                        { TagPill("TAG PILL 1", backgroundColor = Colors.XPEHO_COLOR) },
-                        { TagPill("TAG PILL 2", backgroundColor = Colors.XPEHO_COLOR) },
-                        { TagPill("TAG PILL 3", backgroundColor = Colors.XPEHO_COLOR) },
-                        { TagPill("TAG PILL 4", backgroundColor = Colors.XPEHO_COLOR) },
-                    ),
+                    tags = {
+                        TagPill("TAG PILL 1", backgroundColor = Colors.XPEHO_COLOR)
+                        TagPill("TAG PILL 2", backgroundColor = Colors.XPEHO_COLOR)
+                        TagPill("TAG PILL 3", backgroundColor = Colors.XPEHO_COLOR)
+                        TagPill("TAG PILL 4", backgroundColor = Colors.XPEHO_COLOR)
+                    },
+
                     labelPosition = LabelPosition.TOP,
                 )
             }

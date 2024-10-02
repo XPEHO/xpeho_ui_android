@@ -286,7 +286,7 @@ ChoiceSelector(
 
 ### FilePreviewButton
 
-![FilePreviewButton] (xpeho_ui_android/doc/filepreviewbutton.png)
+![FilePreviewButton](xpeho_ui_android/doc/filepreviewbutton.png)
 
 Usage:
 ```kotlin
