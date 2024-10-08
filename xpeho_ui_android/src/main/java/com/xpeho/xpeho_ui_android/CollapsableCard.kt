@@ -48,7 +48,7 @@ fun CollapsableCard(
     openArrowIcon: @Composable () -> Unit = {
         Icon(
             painterResource(id = R.drawable.chevron_down),
-            contentDescription = "Newsletter collapse icon",
+            contentDescription = "Newsletter collapse open icon",
             modifier = Modifier
                 .size(24.dp)
         )
@@ -56,7 +56,7 @@ fun CollapsableCard(
     closeArrowIcon: @Composable () -> Unit = {
         Icon(
             painterResource(id = R.drawable.chevron_up),
-            contentDescription = "Newsletter collapse icon",
+            contentDescription = "Newsletter collapse close icon",
             modifier = Modifier
                 .size(24.dp)
         )
@@ -191,7 +191,7 @@ fun CollapsableCardPreview() {
                             Icon(
                                 painter = painterResource(id = R.drawable.briefcase),
                                 tint = Colors.XPEHO_COLOR,
-                                contentDescription = "Newsletter icon",
+                                contentDescription = "Briefcase icon",
                             )
                         },
                         defaultOpen = true,
@@ -220,7 +220,7 @@ fun CollapsableCardPreview() {
                             Icon(
                                 painter = painterResource(id = R.drawable.qvst),
                                 tint = Colors.XPEHO_COLOR,
-                                contentDescription = "Newsletter icon",
+                                contentDescription = "Qvst icon",
                             )
                         },
                         defaultOpen = true,
@@ -262,7 +262,7 @@ fun CollapsableCardPreview() {
                             Icon(
                                 painter = painterResource(id = R.drawable.birthday),
                                 tint = Colors.XPEHO_COLOR,
-                                contentDescription = "Newsletter icon",
+                                contentDescription = "Birthday icon",
                             )
                         },
                         tags = {
@@ -274,12 +274,12 @@ fun CollapsableCardPreview() {
                 }
                 item {
                     CollapsableCard(
-                        label = "Birthday of NAME",
+                        label = "Collapsable Card Customized",
                         icon = {
                             Icon(
                                 painter = painterResource(id = R.drawable.birthday),
                                 tint = Color.White,
-                                contentDescription = "Newsletter icon",
+                                contentDescription = "Birthday icon",
                             )
                         },
                         headTag = {
