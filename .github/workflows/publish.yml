@@ -1,21 +1,24 @@
 on:
-  push: tags
+  push:
+    tags:
+      - '**'
 
+name: Publish
 jobs:
-  name: Publish
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - name: Get the version
-      id: get_version
-      run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
-    - name: Build aar
-      run: ./gradlew assembleRelease
-    - name: Publish aar
-      run: ./gradlew publish
-      env:
-        USER: ${{ secrets.GITHUB_ACTOR }}
-        PAT: ${{ secrets.GITHUB_TOKEN }}
-        PUBLISH_VERSION: ${{ steps.get_version.outputs.VERSION }}
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+      - name: Build aar
+        run: ./gradlew assembleRelease
+      - name: Publish aar
+        run: ./gradlew publish
+        env:
+          USER: ${GITHUB_ACTOR}
+          PAT: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_VERSION: ${{ steps.get_version.outputs.VERSION }}
