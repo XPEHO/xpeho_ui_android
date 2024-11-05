@@ -23,6 +23,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -57,23 +59,15 @@ fun InputText(
     backgroundColor: Color = Color.White,
     inputColor: Color = Color.Black,
     password: Boolean = false,
+    focusRequester: FocusRequester = FocusRequester(),
     onInput: (String) -> Unit = { input -> println("The input $input is typed") }
 ) {
     var input by remember { mutableStateOf(defaultInput) }
     var passwordVisible by remember { mutableStateOf(false) }
     var isFocused by remember { mutableStateOf(false) }
 
-    val visualTransform = if (password && !passwordVisible) {
-        PasswordVisualTransformation()
-    } else {
-        VisualTransformation.None
-    }
-
-    val keyBoardType = if (password) {
-        KeyboardType.Password
-    } else {
-        KeyboardType.Text
-    }
+    val visualTransform = getVisualTransformation(password, passwordVisible)
+    val keyBoardType = getKeyboardType(password)
 
     val animatedLabelSize by animateFloatAsState(
         targetValue = if (isFocused || input.isNotEmpty()) labelSize.value - 3f else labelSize.value, label = ""
@@ -125,6 +119,7 @@ fun InputText(
                         )
                         .onFocusChanged { isFocused = it.isFocused }
                         .semantics { contentDescription = label }
+                        .focusRequester(focusRequester)
                 )
             }
 
@@ -146,6 +141,24 @@ fun InputText(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun getVisualTransformation(password: Boolean, passwordVisible: Boolean): VisualTransformation {
+    return if (password && !passwordVisible) {
+        PasswordVisualTransformation()
+    } else {
+        VisualTransformation.None
+    }
+}
+
+@Composable
+private fun getKeyboardType(password: Boolean): KeyboardType {
+    return if (password) {
+        KeyboardType.Password
+    } else {
+        KeyboardType.Text
     }
 }
 
