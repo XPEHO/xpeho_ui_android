@@ -258,6 +258,9 @@ InputText(
     backgroundColor = Color,
     inputColor = Color,
     password = Boolean,
+    focusRequester = FocusRequester,
+    keyboardAction = ImeAction,
+    onKeyboardAction = () -> Unit,
     onInput = (String) -> Unit
 )
 ```
