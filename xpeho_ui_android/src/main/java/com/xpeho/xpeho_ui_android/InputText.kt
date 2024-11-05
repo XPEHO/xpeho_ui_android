@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
@@ -32,6 +33,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -60,6 +62,8 @@ fun InputText(
     inputColor: Color = Color.Black,
     password: Boolean = false,
     focusRequester: FocusRequester = FocusRequester(),
+    keyboardAction: ImeAction = ImeAction.Next,
+    onKeyboardAction: () -> Unit = {},
     onInput: (String) -> Unit = { input -> println("The input $input is typed") }
 ) {
     var input by remember { mutableStateOf(defaultInput) }
@@ -104,7 +108,15 @@ fun InputText(
                         onInput(it)
                     },
                     visualTransformation = visualTransform,
-                    keyboardOptions = KeyboardOptions(keyboardType = keyBoardType),
+                    keyboardOptions = KeyboardOptions(keyboardType = keyBoardType, imeAction = keyboardAction),
+                    keyboardActions = KeyboardActions(
+                        onNext = {
+                            onKeyboardAction()
+                        },
+                        onDone = {
+                            onKeyboardAction()
+                        }
+                    ),
                     textStyle = LocalTextStyle.current.copy(
                         fontSize = inputSize,
                         fontFamily = Fonts.rubik,
@@ -165,6 +177,9 @@ private fun getKeyboardType(password: Boolean): KeyboardType {
 @Preview(showBackground = true)
 @Composable
 fun InputTextPreview() {
+    val testFocusRequester by remember { mutableStateOf(FocusRequester()) }
+    val test2FocusRequester by remember { mutableStateOf(FocusRequester()) }
+
     Surface(
         color = Colors.BACKGROUND_COLOR,
         modifier = Modifier.padding(16.dp)
@@ -174,13 +189,22 @@ fun InputTextPreview() {
                 label = "Input Text",
                 labelSize = 14.sp,
                 inputSize = 16.sp,
+                keyboardAction = ImeAction.Next,
+                onKeyboardAction = {
+                    testFocusRequester.requestFocus()
+                }
             )
             Spacer(modifier = Modifier.height(16.dp))
             InputText(
                 label = "Input Text Hiddenable",
                 labelSize = 14.sp,
                 inputSize = 16.sp,
-                password = false,
+                password = true,
+                focusRequester = testFocusRequester,
+                keyboardAction = ImeAction.Done,
+                onKeyboardAction = {
+                    System.out.println("HaHa")
+                }
             )
             Spacer(modifier = Modifier.height(16.dp))
             InputText(
@@ -188,6 +212,7 @@ fun InputTextPreview() {
                 defaultInput = "input",
                 labelSize = 14.sp,
                 inputSize = 16.sp,
+                focusRequester = test2FocusRequester
             )
             Spacer(modifier = Modifier.height(16.dp))
             InputText(
