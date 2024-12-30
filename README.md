@@ -2,18 +2,11 @@
 
 This is an Android implementation of the Xpeho UI made with Jetpack Compose.
 
-## Getting started
+## Import the package
 
-### Changes on the library
+To import the package in your android project, follow theses steps:
 
-- Clone the repository using `git clone`
-- Launch the folder in Android Studio
-- Make your changes
-- Send a Pull Request
-
-### Import and use the library in your app
-
-- Add the following code to your gradle repositories _(pluginManagement and dependencyREsolutionManagement blocks)_ :
+- Add the following code to your gradle file on your project _(pluginManagement and dependencyREsolutionManagement blocks)_ :
 
   ```gradle
   maven {
@@ -25,40 +18,48 @@ This is an Android implementation of the Xpeho UI made with Jetpack Compose.
   }
   ```
 
-- As you can see we don't set username and password, that's because we can't compute from a `github.properties` file in that type of block so we add the following code after these two blocks :
+- As you can see we don't set username and password, that's because we can't compute from an other file in that type of block so we add the following code after these two blocks :
 
   ```gradle
-  // Load properties from github.properties file
-  def githubProperties = new Properties()
-  file('github.properties').withInputStream { stream ->
-      githubProperties.load(stream)
-  }
-
   // Update credentials
   gradle.settingsEvaluated {
-      pluginManagement.repositories {
-          maven {
-              url 'https://maven.pkg.github.com/XPEHO/xpeho_ui_android'
-              credentials {
-                  username = githubProperties['gpr.user'] ?: ""
-                  password = githubProperties['gpr.key'] ?: ""
-              }
-          }
-      }
+    pluginManagement.repositories {
+        maven {
+            url 'https://maven.pkg.github.com/XPEHO/xpeho_ui_android'
+            credentials {
+                username = System.getenv('GITHUB_USER') ?: ""
+                password = System.getenv('GITHUB_TOKEN') ?: ""
+            }
+        }
+    }
 
-      dependencyResolutionManagement.repositories {
-          maven {
-              url 'https://maven.pkg.github.com/XPEHO/xpeho_ui_android'
-              credentials {
-                  username = githubProperties['gpr.user'] ?: ""
-                  password = githubProperties['gpr.key'] ?: ""
-              }
-          }
-      }
+    dependencyResolutionManagement.repositories {
+        maven {
+            url 'https://maven.pkg.github.com/XPEHO/xpeho_ui_android'
+            credentials {
+                username = System.getenv('GITHUB_USER') ?: ""
+                password = System.getenv('GITHUB_TOKEN') ?: ""
+            }
+        }
+    }
   }
   ```
 
-- For the creation of the `github.properties` refer to the linked section in the **Deployment** part.
+- Add the needed environment variables :
+
+  - On a mac/linux you can add them to your `.zshrc`/`.bashrc`
+
+    ```zshrc
+    #Github
+    export GITHUB_USER="your_github_username"
+    export GITHUB_TOKEN="your_github_token"
+    ```
+
+    To fill the GITHUB_TOKEN, make sure to generate a PAT (Personal Access Token) on your github account following the [documentation](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic).
+
+    You need to allow the following rights :
+    ![repos_right](doc/repos_right.png)
+    ![packages_right](doc/packages_right.png)
 
 - Now we can add in our **dependencies** block of the `build.gradle` file the following implementation :
 
@@ -73,54 +74,7 @@ This is an Android implementation of the Xpeho UI made with Jetpack Compose.
   import com.xpeho.xpeho_ui_android.*
   ```
 
-## Deployment
-
-### Java Runtime
-
-Make sure you have install a Java Runtime.
-
-- MacOS : 
-    ```shell
-    brew install java
-    echo 'export PATH="/usr/local/opt/openjdk/bin:$PATH"' >> ~/.zshrc
-    export CPPFLAGS="-I/usr/local/opt/openjdk/include"
-    ```
-
-    After that you can relaunch your terminale or type :
-    ```shell      
-    source ~/.zshrc   
-    ```
-
-### Github properties
-
-Define at the root of the repository a file `github.properties` following this structure :
-
-```
-gpr.user=YOUR_USERNAME
-gpr.key=YOUR_PERSONAL_ACCESS_TOKEN
-```
-
-Make sure to generate a PAT (Personal Access Token) on your github account following the [documentation](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic).
-
-You need to allow the following rights :
-![repos_right](doc/repos_right.png)
-![packages_right](doc/packages_right.png)
-
-> [!WARNING]
-> Make sure to have the right access to the repository to be able to deploy.
-
-### Process
-
-Make sure to update the version code in the [build.gradle.kts](xpeho_ui_android/build.gradle.kts) file, it will be the version code of the package on github.
-
-Now launch a terminal in the root of the directory and type :
-
-- `./gradlew assembleRelease`
-- `./gradlew publish`
-
-You can check the deployment by looking at the repository page, it should have your deployment on the packages section.
-
-## Usage
+## Use the package
 
 ### Assets
 
@@ -292,6 +246,7 @@ ChoiceSelector(
 ![FilePreviewButton](xpeho_ui_android/doc/filepreviewbutton.png)
 
 Usage:
+
 ```kotlin
 import com.xpeho.xpeho_ui_android.FilePreviewButton
 
@@ -309,9 +264,24 @@ FilePreviewButton(
     onPress: () -> Unit,
     arrowIcon: @Composable() -> Unit,
 )
+```
 
+## Edit the package
 
-## Testing
+- Clone the repository using `git clone`
+- Launch the folder in Android Studio
+- Make your changes
+- Send a Pull Request
+
+## Deploy the package
+
+A workflow has been created on this repository to automatically deploy the package in artifacts on creating a new release.
+
+The only thing you need to do so is to create a new release on the repository following the [GitHub documentation](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository).
+
+You can check the deployed packages by looking at the repository page, it should have your packages on the packages section.
+
+## Testing the package
 
 ### Snapshot testing
 
