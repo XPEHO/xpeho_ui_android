@@ -64,7 +64,8 @@ fun InputText(
     focusRequester: FocusRequester = FocusRequester(),
     keyboardAction: ImeAction = ImeAction.Next,
     onKeyboardAction: () -> Unit = {},
-    onInput: (String) -> Unit = { input -> println("The input $input is typed") }
+    onInput: (String) -> Unit = { input -> println("The input $input is typed") },
+    isReadOnly : Boolean = false
 ) {
     var input by remember { mutableStateOf(defaultInput) }
     var passwordVisible by remember { mutableStateOf(false) }
@@ -123,6 +124,7 @@ fun InputText(
                         fontWeight = FontWeight.Normal,
                         color = inputColor
                     ),
+                    readOnly = isReadOnly,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
@@ -132,6 +134,7 @@ fun InputText(
                         .onFocusChanged { isFocused = it.isFocused }
                         .semantics { contentDescription = label }
                         .focusRequester(focusRequester)
+
                 )
             }
 
@@ -212,7 +215,8 @@ fun InputTextPreview() {
                 defaultInput = "input",
                 labelSize = 14.sp,
                 inputSize = 16.sp,
-                focusRequester = test2FocusRequester
+                focusRequester = test2FocusRequester,
+                isReadOnly = true
             )
             Spacer(modifier = Modifier.height(16.dp))
             InputText(

@@ -215,7 +215,8 @@ InputText(
     focusRequester = FocusRequester,
     keyboardAction = ImeAction,
     onKeyboardAction = () -> Unit,
-    onInput = (String) -> Unit
+    onInput = (String) -> Unit,
+    isReadOnly = Boolean
 )
 ```
 
