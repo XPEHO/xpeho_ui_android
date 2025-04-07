@@ -160,7 +160,7 @@ ClickyButton(
 
 #### TagPill
 
-![TagPill Preview](xpeho_ui_android/doc/tagpill.png)
+![TagPill Preview](xpeho_ui_android/doc/tag_pill.png)
 
 Usage:
 
