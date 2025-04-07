@@ -171,7 +171,8 @@ TagPill(
     label = String,
     size = TextUnit,
     backgroundColor = Color,
-    labelColor = Color
+    labelColor = Color,
+    icon = @Composable() -> Unit? {},
 )
 ```
 
